@@ -2,11 +2,18 @@
 
 module HexletCode
   class Form # rubocop:disable Style/Documentation
+    DEFAULT_ATTRIBUTES = { action: "#", method: "post" }.freeze
+
+    def self.prepare_attributes(attributes)
+      agreed_keys_attributes = attributes.transform_keys { |key| key == :url ? :action : key }
+      DEFAULT_ATTRIBUTES.merge(agreed_keys_attributes)
+    end
+
     attr_reader :entity, :attributes, :block, :inputs
 
     def initialize(entity, attributes, block)
       @entity = entity
-      @attributes = attributes
+      @attributes = Form.prepare_attributes(attributes)
       @block = block
       @inputs = []
     end
