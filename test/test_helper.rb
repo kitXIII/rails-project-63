@@ -5,3 +5,5 @@ require "hexlet_code"
 
 require "minitest/autorun"
 require "minitest/power_assert"
+
+User = Struct.new(:name, :job, keyword_init: true)
