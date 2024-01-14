@@ -22,7 +22,7 @@ class TestHexletCode < Minitest::Test
   def test_it_should_build_form_with_simple_inputs
     user = User.new name: "rob", job: "hexlet"
 
-    expected = read_fixture("simple_form")
+    expected = read_fixture("simple_inputs")
 
     result = HexletCode.form_for user do |f|
       f.input :name, class: "user-input"
