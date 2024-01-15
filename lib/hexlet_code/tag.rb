@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HexletCode
-  module Tag # rubocop:disable Style/Documentation
+  module Tag
     SINGLE_TAGS = %i[br img input].freeze
 
     def self.build(name, **attributes)

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module HexletCode
-  class Form # rubocop:disable Style/Documentation
+  class Form
     INPUT_TAGS_AND_ATTRBUTESS = {
-      string: { tag: :input, attributes: { type: "text" } },
+      string: { tag: :input, attributes: { type: 'text' } },
       text: { tag: :textarea, attributes: { cols: 20, rows: 40 } },
-      submit: { tag: :input, attributes: { type: "submit" } }
+      submit: { tag: :input, attributes: { type: 'submit' } }
     }.freeze
 
     BUILDERS = {
@@ -18,7 +18,7 @@ module HexletCode
         Tag.build(tag, **attributes)
       end,
       label: proc do |tag, attributes|
-        value = attributes.fetch(:for, "").capitalize
+        value = attributes.fetch(:for, '').capitalize
         Tag.build(tag, **attributes) { value }
       end,
       textarea: proc do |tag, attrs|
@@ -27,7 +27,7 @@ module HexletCode
       end
     }.freeze
 
-    DEFAULT_FORM_ATTRIBUTES = { action: "#", method: "post" }.freeze
+    DEFAULT_FORM_ATTRIBUTES = { action: '#', method: 'post' }.freeze
 
     def self.prepare_attributes(attributes)
       suitable_keys_attributes = attributes.transform_keys { |key| key == :url ? :action : key }
@@ -54,7 +54,7 @@ module HexletCode
       children << [tag, { name:, value:, **default_attributes.merge(input_attributes) }]
     end
 
-    def submit(value = "Save")
+    def submit(value = 'Save')
       tag, default_attributes = get_defaults_by_type(:submit)
 
       children << [tag, { value:, **default_attributes }]
@@ -68,14 +68,14 @@ module HexletCode
     end
 
     def to_s
-      Tag.build("form", **attributes) do
+      Tag.build('form', **attributes) do
         block.call(self)
 
         form_body = children
                     .map { |tag, attrs| BUILDERS[tag].call(tag, attrs) }
                     .map { |i| "    #{i}" }.join("\n")
 
-        form_body.empty? ? "" : "\n#{form_body}\n"
+        form_body.empty? ? '' : "\n#{form_body}\n"
       end
     end
   end

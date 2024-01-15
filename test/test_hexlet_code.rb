@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class TestHexletCode < Minitest::Test
   def test_that_it_has_a_version_number
@@ -14,18 +14,18 @@ class TestHexletCode < Minitest::Test
     end
     assert { result == '<form action="#" method="post"></form>' }
 
-    result = HexletCode.form_for user, url: "/users" do |f|
+    result = HexletCode.form_for user, url: '/users' do |f|
     end
     assert { result == '<form action="/users" method="post"></form>' }
   end
 
   def test_it_should_build_form_with_inputs
-    user = User.new name: "rob", job: "hexlet"
+    user = User.new name: 'rob', job: 'hexlet'
 
-    expected = read_fixture("form_with_inputs")
+    expected = read_fixture('form_with_inputs')
 
     result = HexletCode.form_for user do |f|
-      f.input :name, class: "user-input"
+      f.input :name, class: 'user-input'
       f.input :job
       f.submit
     end
@@ -33,16 +33,16 @@ class TestHexletCode < Minitest::Test
     assert { result == expected }
   end
 
-  def test_it_should_build_form_with_input_as_text # rubocop:disable Metrics/MethodLength
-    user = User.new name: "rob", job: "hexlet"
+  def test_it_should_build_form_with_input_as_text
+    user = User.new name: 'rob', job: 'hexlet'
 
     cases = [
       {
-        fixture: "form_with_input_as_text_defaults",
+        fixture: 'form_with_input_as_text_defaults',
         params: { as: :text }
       },
       {
-        fixture: "form_with_input_as_text",
+        fixture: 'form_with_input_as_text',
         params: { as: :text, rows: 50, cols: 50 }
       }
     ]
@@ -61,7 +61,7 @@ class TestHexletCode < Minitest::Test
   def test_it_should_build_form_with_empty_inputs
     user = User.new
 
-    expected = read_fixture("form_with_empty_inputs")
+    expected = read_fixture('form_with_empty_inputs')
 
     result = HexletCode.form_for user do |f|
       f.input :name
@@ -75,9 +75,9 @@ class TestHexletCode < Minitest::Test
   def test_it_should_build_form_with_submit_specific_value
     user = User.new
 
-    expected = read_fixture("form_with_submit_specific_value")
+    expected = read_fixture('form_with_submit_specific_value')
     result = HexletCode.form_for user do |f|
-      f.submit "Send"
+      f.submit 'Send'
     end
 
     assert { result == expected }
