@@ -17,6 +17,10 @@ module HexletCode
         end
         Tag.build(tag, **attributes)
       end,
+      label: proc do |tag, attributes|
+        value = attributes.fetch(:for, "").capitalize
+        Tag.build(tag, **attributes) { value }
+      end,
       textarea: proc do |tag, attrs|
         attributes = [attrs.slice(:name), attrs.except(:tag, :name, :value)].reduce { |acc, val| acc.merge(val) }
         Tag.build(tag, **attributes) { attrs[:value] }
@@ -46,6 +50,7 @@ module HexletCode
       input_attributes = params.except(:as).sort.to_h
       value = entity.public_send(name)
 
+      children << [:label, { for: name }]
       children << [tag, { name:, value:, **default_attributes.merge(input_attributes) }]
     end
 

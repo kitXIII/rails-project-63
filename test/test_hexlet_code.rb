@@ -19,14 +19,15 @@ class TestHexletCode < Minitest::Test
     assert { result == '<form action="/users" method="post"></form>' }
   end
 
-  def test_it_should_build_form_with_simple_inputs
+  def test_it_should_build_form_with_inputs
     user = User.new name: "rob", job: "hexlet"
 
-    expected = read_fixture("simple_inputs")
+    expected = read_fixture("form_with_inputs")
 
     result = HexletCode.form_for user do |f|
       f.input :name, class: "user-input"
       f.input :job
+      f.submit
     end
 
     assert { result == expected }
@@ -37,11 +38,11 @@ class TestHexletCode < Minitest::Test
 
     cases = [
       {
-        fixture: "as_text_input_defaults",
+        fixture: "form_with_input_as_text_defaults",
         params: { as: :text }
       },
       {
-        fixture: "as_text_input",
+        fixture: "form_with_input_as_text",
         params: { as: :text, rows: 50, cols: 50 }
       }
     ]
@@ -57,15 +58,10 @@ class TestHexletCode < Minitest::Test
     end
   end
 
-  def test_it_should_build_form_with_submit
+  def test_it_should_build_form_with_submit_specific_value
     user = User.new
 
-    expected = read_fixture("submit_defaults")
-    result = HexletCode.form_for user, &:submit
-
-    assert { result == expected }
-
-    expected = read_fixture("submit")
+    expected = read_fixture("form_with_submit_specific_value")
     result = HexletCode.form_for user do |f|
       f.submit "Send"
     end
