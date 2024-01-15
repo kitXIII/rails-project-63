@@ -57,6 +57,22 @@ class TestHexletCode < Minitest::Test
     end
   end
 
+  def test_it_should_build_form_with_submit
+    user = User.new
+
+    expected = read_fixture("submit_defaults")
+    result = HexletCode.form_for user, &:submit
+
+    assert { result == expected }
+
+    expected = read_fixture("submit")
+    result = HexletCode.form_for user do |f|
+      f.submit "Send"
+    end
+
+    assert { result == expected }
+  end
+
   def test_it_shoutd_rise_error_when_unexpected_input_name
     user = User.new
 
