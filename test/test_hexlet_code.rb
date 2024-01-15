@@ -58,6 +58,20 @@ class TestHexletCode < Minitest::Test
     end
   end
 
+  def test_it_should_build_form_with_empty_inputs
+    user = User.new
+
+    expected = read_fixture("form_with_empty_inputs")
+
+    result = HexletCode.form_for user do |f|
+      f.input :name
+      f.input :job, as: :text
+      f.submit
+    end
+
+    assert { result == expected }
+  end
+
   def test_it_should_build_form_with_submit_specific_value
     user = User.new
 
