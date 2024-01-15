@@ -10,11 +10,13 @@ class TestHexletCode < Minitest::Test
   def test_it_should_build_empty_form
     user = User.new
 
-    result = HexletCode.form_for user do |f|
+    result = HexletCode.form_for user do |_f|
+      ''
     end
     assert { result == '<form action="#" method="post"></form>' }
 
-    result = HexletCode.form_for user, url: '/users' do |f|
+    result = HexletCode.form_for user, url: '/users' do |_f|
+      ''
     end
     assert { result == '<form action="/users" method="post"></form>' }
   end
