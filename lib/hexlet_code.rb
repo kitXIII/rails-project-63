@@ -4,9 +4,14 @@ require_relative 'hexlet_code/version'
 
 module HexletCode
   autoload :Tag, 'hexlet_code/tag'
-  autoload :Form, 'hexlet_code/form'
+  autoload :FormBuilder, 'hexlet_code/form_builder'
+  autoload :FormRender, 'hexlet_code/form_render'
+  autoload :Tags, 'hexlet_code/tags/tags'
+  autoload :Inputs, 'hexlet_code/inputs/inputs'
 
-  def self.form_for(entity, **attributes, &block)
-    Form.new(entity, attributes, block).to_s
+  def self.form_for(entity, attributes = {})
+    builded_form = FormBuilder.new(entity, **attributes)
+    yield builded_form if block_given?
+    FormRender.render_html(builded_form)
   end
 end

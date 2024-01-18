@@ -4,7 +4,7 @@ module HexletCode
   module Tag
     SINGLE_TAGS = %i[br img input].freeze
 
-    def self.build(name, **attributes)
+    def self.build(name, attributes)
       if SINGLE_TAGS.include? name.to_sym
         build_single_tag(name, attributes)
       else
