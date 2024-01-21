@@ -3,9 +3,7 @@
 module HexletCode
   module Inputs
     class StringInput < BaseInput
-      def default_attributes
-        { type: 'text' }
-      end
+      DEFAULT_ATTRIBUTES = { type: 'text' }.freeze
     end
   end
 end
