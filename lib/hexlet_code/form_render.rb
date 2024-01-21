@@ -9,10 +9,11 @@ module HexletCode
     end
 
     def self.build_input_tags(input)
-      label = input.attributes[:label]
+      input_attributes = input.attributes
+      label = input_attributes[:label]
       [
-        Tag.build(:label, **label.slice(:for)) { label[:value] },
-        Tag.build(input.tag, **input.attributes.except(:label)) { input.body }
+        Tag.build(:label, **label.except(:value)) { label[:value] },
+        Tag.build(input.tag, **input_attributes.except(:label)) { input.body }
       ]
     end
 
