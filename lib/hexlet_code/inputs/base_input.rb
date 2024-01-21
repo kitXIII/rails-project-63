@@ -2,12 +2,21 @@
 
 module HexletCode
   module Inputs
-    class BaseInput < Tags::BaseTag
-      TAG = :input
+    class BaseInput
+      attr_reader :attributes, :body
 
-      def attributes
-        attrs = super
-        attrs.slice(:name).merge(attrs)
+      def initialize(attributes = {}, body = nil)
+        @attributes = attributes.slice(:name)
+                                .merge(default_attributes, attributes)
+        @body = body
+      end
+
+      def default_attributes
+        {}
+      end
+
+      def tag
+        :input
       end
     end
   end

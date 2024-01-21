@@ -1,31 +1,51 @@
 # frozen_string_literal: true
 
+require 'active_support'
+
 module HexletCode
-  class FormBuilder < Tags::Form
-    def self.prepare_from_attributes(attributes)
-      attributes.transform_keys { |key| key == :url ? :action : key }
-    end
+  class FormBuilder
+    attr_reader :form_body
 
-    attr_reader :entity, :attributes
-
-    def initialize(entity, **attributes)
+    def initialize(entity, options = {})
       @entity = entity
-      prepared_attributes = FormBuilder.prepare_from_attributes(attributes)
-      super(prepared_attributes)
+
+      action = options.fetch(:url, '#')
+      method = options.fetch(:method, 'post')
+
+      @form_body = {
+        inputs: [],
+        submit: nil,
+        attributes: { action:, method: }.merge(options.except(:url, :method))
+      }
     end
 
-    def input(name, **params)
-      input_type = params.fetch(:as, :string)
-      input_attributes = params.except(:as).sort.to_h
+    def input(name, options = {})
+      input_type = options.fetch(:as, :string)
+      input_attributes = options.except(:as).sort.to_h
 
-      value = entity.public_send(name)
+      value = @entity.public_send(name)
 
-      append Tags::Label.new({ for: name })
-      append Inputs.get_input_class_by_type(input_type).new({ name:, value:, **input_attributes })
+      label_value = options.fetch(:label, name.to_s.capitalize)
+
+      attributes = {
+        name:,
+        value:,
+        label: { for: name, value: label_value }
+      }.merge(input_attributes)
+
+      @form_body[:inputs] << build_input(input_type, attributes)
     end
 
-    def submit(value = 'Save')
-      append Inputs::SubmitInput.new({ value: })
+    def submit(value = 'Save', options = {})
+      attributes = { type: 'submit', value: }.merge(options)
+      @form_body[:submit] = { attributes: }
+    end
+
+    private
+
+    def build_input(input_type, attributes)
+      input_class = "HexletCode::Inputs::#{input_type.capitalize}Input".constantize
+      input_class.new(attributes)
     end
   end
 end
