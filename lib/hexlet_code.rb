@@ -6,7 +6,7 @@ module HexletCode
   autoload :Tag, 'hexlet_code/tag'
   autoload :FormBuilder, 'hexlet_code/form_builder'
   autoload :FormRender, 'hexlet_code/form_render'
-  autoload :Inputs, 'hexlet_code/inputs/inputs'
+  autoload :Inputs, 'hexlet_code/inputs'
 
   def self.form_for(entity, attributes = {})
     builded_form = FormBuilder.new(entity, **attributes)

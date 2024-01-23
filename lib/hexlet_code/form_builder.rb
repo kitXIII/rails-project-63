@@ -20,32 +20,31 @@ module HexletCode
     end
 
     def input(name, options = {})
-      input_type = options.fetch(:as, :string)
-      input_attributes = options.except(:as).sort.to_h
-
-      value = @entity.public_send(name)
-
-      label_value = options.fetch(:label, name.to_s.capitalize)
-
-      attributes = {
-        name:,
-        value:,
-        label: { for: name, value: label_value }
-      }.merge(input_attributes)
-
-      @form_body[:inputs] << build_input(input_type, attributes)
+      @form_body[:inputs] << build_input(name, options)
     end
 
     def submit(value = 'Save', options = {})
-      attributes = { type: 'submit', value: }.merge(options)
+      attributes = { value: }.merge(options)
       @form_body[:submit] = { attributes: }
     end
 
     private
 
-    def build_input(input_type, attributes)
-      input_class = "HexletCode::Inputs::#{input_type.capitalize}Input".constantize
-      input_class.new(attributes)
+    def build_input(name, options)
+      type = options.fetch(:as, :string)
+      attributes = options.except(:as).sort.to_h
+
+      value = @entity.public_send(name)
+
+      label_value = options.fetch(:label, name.to_s.capitalize)
+
+      {
+        name:,
+        value:,
+        type:,
+        attributes:,
+        label: { for: name, value: label_value }
+      }
     end
   end
 end

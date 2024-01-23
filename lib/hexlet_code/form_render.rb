@@ -5,25 +5,24 @@ module HexletCode
     INDENT = '    '
 
     def self.join_with_indentation(items)
-      "\n#{items.map { |i| "#{INDENT}#{i}" }.join("\n")}\n"
+      items.map { |i| "#{INDENT}#{i}" }
+           .join("\n")
     end
 
-    def self.build_input_tags(input)
-      input_attributes = input.attributes
-      label = input_attributes[:label]
-      [
-        Tag.build(:label, **label.except(:value)) { label[:value] },
-        Tag.build(input.tag, **input_attributes.except(:label)) { input.body }
-      ]
+    def self.render_input(input)
+      klass = "HexletCode::Inputs::#{input[:type].capitalize}Input".constantize
+
+      input_obj = klass.new(input.except(:type))
+      input_obj.render({ input_label_separator: "\n#{INDENT}" })
     end
 
     def self.render_html(form)
       Tag.build(:form, form[:attributes]) do
-        form_parts = form[:inputs].map { |input| build_input_tags(input) }.flatten
+        form_parts = form[:inputs].map { |input| render_input(input) }
 
-        form_parts << Tag.build(:input, **form[:submit][:attributes]) unless form[:submit].nil?
+        form_parts << Tag.build(:input, type: 'submit', **form[:submit][:attributes]) unless form[:submit].nil?
 
-        form_parts.any? ? join_with_indentation(form_parts) : ''
+        form_parts.any? ? "\n#{join_with_indentation(form_parts)}\n" : ''
       end
     end
   end

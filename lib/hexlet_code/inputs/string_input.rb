@@ -3,7 +3,15 @@
 module HexletCode
   module Inputs
     class StringInput < BaseInput
-      DEFAULT_ATTRIBUTES = { type: 'text' }.freeze
+      TYPE = 'text'
+
+      def input
+        name = @input[:name]
+        value = @input[:value]
+        attributes = @input[:attributes]
+
+        Tag.build(:input, name:, type: TYPE, value:, **attributes)
+      end
     end
   end
 end

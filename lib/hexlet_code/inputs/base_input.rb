@@ -3,18 +3,23 @@
 module HexletCode
   module Inputs
     class BaseInput
-      DEFAULT_ATTRIBUTES = {}.freeze
-      TAG = :input
+      def initialize(input)
+        @input = input.except(:label)
+        @label = input[:label]
+      end
 
-      attr_reader :tag, :attributes, :body
+      def label
+        Tag.build(:label, **@label.except(:value)) { @label[:value] }
+      end
 
-      def initialize(attributes = {}, body = nil)
-        @tag = self.class::TAG
+      def input
+        raise NotImplementedError
+      end
 
-        default_attributes = self.class::DEFAULT_ATTRIBUTES
-        @attributes = attributes.slice(:name).merge(default_attributes, attributes)
+      def render(options = {})
+        separator = options.fetch(:input_label_separator, '')
 
-        @body = body
+        [label, input].join(separator)
       end
     end
   end

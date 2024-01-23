@@ -3,12 +3,15 @@
 module HexletCode
   module Inputs
     class TextInput < BaseInput
-      DEFAULT_ATTRIBUTES = { cols: 20, rows: 40 }.freeze
-      TAG = :textarea
+      COLS = 20
+      ROWS = 40
 
-      def initialize(attributes = {})
-        value = attributes.fetch(:value, '')
-        super(attributes.except(:value), value)
+      def input
+        name = @input[:name]
+        value = @input[:value]
+        attributes = @input[:attributes]
+
+        Tag.build(:textarea, name:, cols: COLS, rows: ROWS, **attributes) { value }
       end
     end
   end
