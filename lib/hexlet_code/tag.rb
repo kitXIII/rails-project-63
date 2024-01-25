@@ -26,5 +26,7 @@ module HexletCode
                 .map { |key, val| " #{key}=\"#{val}\"" }
                 .join
     end
+
+    private_class_method :build_single_tag, :build_pair_tag, :attributes_to_string
   end
 end

@@ -8,18 +8,20 @@ module HexletCode
         @label = input[:label]
       end
 
+      def render(options = {})
+        separator = options.fetch(:input_label_separator, '')
+
+        [label, input].join(separator)
+      end
+
+      private
+
       def label
         Tag.build(:label, **@label.except(:value)) { @label[:value] }
       end
 
       def input
         raise NotImplementedError
-      end
-
-      def render(options = {})
-        separator = options.fetch(:input_label_separator, '')
-
-        [label, input].join(separator)
       end
     end
   end

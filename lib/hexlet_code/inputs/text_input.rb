@@ -6,6 +6,8 @@ module HexletCode
       COLS = 20
       ROWS = 40
 
+      private
+
       def input
         name = @input[:name]
         value = @input[:value]

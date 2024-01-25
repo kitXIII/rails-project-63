@@ -5,6 +5,8 @@ module HexletCode
     class StringInput < BaseInput
       TYPE = 'text'
 
+      private
+
       def input
         name = @input[:name]
         value = @input[:value]
