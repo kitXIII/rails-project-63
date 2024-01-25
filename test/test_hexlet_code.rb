@@ -7,32 +7,36 @@ class TestHexletCode < Minitest::Test
     refute_nil ::HexletCode::VERSION
   end
 
-  def test_it_should_build_empty_form
+  def test_it_should_build_empty_form_with_default_attributes
     user = User.new
 
-    result = HexletCode.form_for user do |_f|
+    actual = HexletCode.form_for user do |_f|
       ''
     end
-    assert { result == '<form action="#" method="post"></form>' }
 
-    result = HexletCode.form_for user, url: '/users' do |_f|
+    assert_equal read_fixture('empty_form_with_default_attributes'), actual
+  end
+
+  def test_it_should_build_empty_form_with_attributes
+    user = User.new
+
+    actual = HexletCode.form_for user, url: '/users', method: 'get', class: 'user-form' do |_f|
       ''
     end
-    assert { result == '<form action="/users" method="post"></form>' }
+
+    assert_equal read_fixture('empty_form_with_specific_attributes'), actual
   end
 
   def test_it_should_build_form_with_inputs
     user = User.new name: 'rob', job: 'hexlet'
 
-    expected = read_fixture('form_with_inputs')
-
-    result = HexletCode.form_for user do |f|
+    actual = HexletCode.form_for user do |f|
       f.input :name, class: 'user-input'
       f.input :job
       f.submit
     end
 
-    assert { result == expected }
+    assert_equal read_fixture('form_with_inputs'), actual
   end
 
   def test_it_should_build_form_with_input_as_text
@@ -50,39 +54,34 @@ class TestHexletCode < Minitest::Test
     ]
 
     cases.each do |test_case|
-      expected = read_fixture(test_case[:fixture])
-
-      result = HexletCode.form_for user do |f|
+      actual = HexletCode.form_for user do |f|
         f.input :job, **test_case[:params]
       end
 
-      assert { result == expected }
+      assert_equal read_fixture(test_case[:fixture]), actual
     end
   end
 
   def test_it_should_build_form_with_empty_inputs
     user = User.new
 
-    expected = read_fixture('form_with_empty_inputs')
-
-    result = HexletCode.form_for user do |f|
+    actual = HexletCode.form_for user do |f|
       f.input :name
       f.input :job, as: :text
       f.submit
     end
 
-    assert { result == expected }
+    assert_equal read_fixture('form_with_empty_inputs'), actual
   end
 
   def test_it_should_build_form_with_submit_specific_value
     user = User.new
 
-    expected = read_fixture('form_with_submit_specific_value')
-    result = HexletCode.form_for user do |f|
+    actual = HexletCode.form_for user do |f|
       f.submit 'Send'
     end
 
-    assert { result == expected }
+    assert_equal read_fixture('form_with_submit_specific_value'), actual
   end
 
   def test_it_shoutd_rise_error_when_unexpected_input_name
@@ -93,7 +92,7 @@ class TestHexletCode < Minitest::Test
         f.input :age
       end
     rescue NoMethodError => e
-      assert_match("undefined method `age' for #<struct User name=nil, job=nil>", e.message)
+      assert_match "undefined method `age' for #<struct User name=nil, job=nil>", e.message
     end
   end
 end
